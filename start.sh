@@ -1,17 +1,20 @@
 #!/bin/bash
-# Start virtual display
+# virtual display
 Xvfb :99 -screen 0 1280x720x24 &
 
-# Export display
 export DISPLAY=:99
 
-# Start lightweight desktop
+# lightweight window manager
 fluxbox &
 
-# Start VNC server on display
-x11vnc -display :99 -nopw -forever -shared -rfbport 5900 &
+# give it a sec to boot
+sleep 2
 
-# Start noVNC on port 8080
-chromium --no-sandbox --start-maximized &
+# start Chromium automatically (feel free to change homepage)
+chromium --no-sandbox --start-maximized --disable-dev-shm-usage https://www.google.com &
 
+# run x11vnc with proper flags for Render
+x11vnc -display :99 -nopw -forever -shared -listen localhost -xkb &
+
+# start websockify with novnc
 websockify --web=/usr/share/novnc/ 8080 localhost:5900
