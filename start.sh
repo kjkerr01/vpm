@@ -12,4 +12,6 @@ fluxbox &
 x11vnc -display :99 -nopw -forever -shared -rfbport 5900 &
 
 # Start noVNC on port 8080
+chromium --no-sandbox --start-maximized &
+
 websockify --web=/usr/share/novnc/ 8080 localhost:5900
